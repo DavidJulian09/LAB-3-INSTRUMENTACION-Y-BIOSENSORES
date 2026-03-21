@@ -1,2 +1,12 @@
-# LAB-3-INSTRUMENTACION-Y-BIOSENSORES
-Laboratorio N°3, cálculo ambulatorio del índice pletismográfico quirúrgico (SPI).
+# LAB 3: CÁLCULO AMBULATORIO DEL ÍNDICE PLETISMOGRÁFICO QUIRÚRGICO (SPI)
+
+## I. INTRODUCCIÓN
+
+
+
+
+
+
+
+
+
