@@ -56,7 +56,17 @@ En un principio se usó el sensor TCST110, el cual se modificó tal como lo indi
 
 Se cree que la razón principal del error en la toma con el sensor TCST110 fue la alta sensibilidad del mismo, y la delicadesa que implica la amplificación y filtrado de la señal por medio del circuito análogo, como por ejemplo el control de factores como potenciómetros y fuentes que garantizan la ganancia del mismo. Por lo anterior el sensor MAX30102 fue una opción más directa y fácil de aplicar, pues es fabricado especialmente para la medición de PPG al contener etapas de amplificación, filtros análogos y digitales que eliminan ruidos provenientes de la fuente o de la iluminación directa.
 
-### b) Código de adquisición y registro SPI
+Finalmente el circuito empleado no requirio de componentes externos por lo que únicamente se conectó los pines de voltaje y tierra del sensor MAX30102 a sus correspondientes puertos de la tarje arduino; ahora bien en cuanto al pin SCL, encargado de de marcar el rítmo de comunicación y la velocidad de comunicación, se conectó al pin A4; en cuanto al pin SDA, encargado de transportar los datos bidireccionalmente entre el sensor y el arduino y establecer comandos, se conectó al pin A5. Todo o anterior se muestra en la siguiente imagen:
+
+<img width="1317" height="1600" alt="image" src="https://github.com/user-attachments/assets/486292e4-3f0f-4dc4-af23-fd90c11cb75a" />
+
+_(Fig 1. Conección sensor - arduino)_
+
+### b) Código de adquisición y cálculo SPI
+
+En primera instancia, hay que distinguir dos puntos escenciales para el código relaizado: la detección de los picos sistólicos y cálculo del SPI conforme a la ecuación presentada en el marco teórico. Lo anterior se describe a continuación.
+
+#### Detección de picos:
 
 
 
@@ -72,7 +82,11 @@ Se cree que la razón principal del error en la toma con el sensor TCST110 fue l
 
 ### b) Comparación valores SPI obtenidos con los observados durante una cirugía
 
-Los valores del SPI en condiciones de reposo se encuentran en quilibrio, en donde predomina la actividad parasimpática, por tanto, la vasoconstricción periférica es baja y la frecuencia cardíaca se mantiene en valores basales; por lo anterior, el SPI calculado a partir de la PPG suele situarse en valores bajos por debajo de 20, tal como se evidencia.
+Los valores del SPI en condiciones de reposo se encuentran en constante variación, en donde predomina la actividad parasimpática, pero a pesar de no estar en un estado de alerta, la vasoconstricción periférica y la frecuencia cardíaca es mayor en comparación de un estado de analgesia, por lo que la actividad simpática es mayor que la que se estaría en analgesia; por lo anterior, el SPI calculado a partir de la PPG suele situarse en valores superiores a 50 (en su mayoría), tal como se evidencia en la terminal.
+
+<img width="275" height="379" alt="image" src="https://github.com/user-attachments/assets/06e62e59-8ec4-41a5-a9fd-af08825dfd2b" />
+
+_(Fig . Terminal con datos SPI reposo)_
 
 Ahora bien, comparando los valores adquiridos con los que se pueden presentar en un estado de anestasia general, el rango SPI es completamente distinto. En un contexto quirúrgico donde el paciente es sometido a anestesia general, la respuesta autonómica a los estímulos quirúrgicos no se elimina por completo, el objetivo es mantener un balance nocicepción-analgesia que evite respuestas simpáticas excesivas. Los estudios han establecido lo siguiente: [3]
 
@@ -82,13 +96,15 @@ Ahora bien, comparando los valores adquiridos con los que se pueden presentar en
 
 • SPI > 50: analgesia insuficiente, puede haber activación simpática.
 
-Ahora bien, la frecuencia de la señal PPG de un paciente bajo analgesia es ligeramente inferior, entre 50-80 lpm, pues se aumenta el tono parasimpático; por otro lado la amplitud de esta señal es por lo general mayor en la analgesia, pues se produce vasodilatación periférica, que incrementa el volumen sanguíneo pulsátil en los tejidos periféricos, aumentando la amplitud de la señal PPG.
+Ahora bien, la frecuencia de la señal PPG de un paciente bajo analgesia es ligeramente inferior, entre 50-80 lpm, pues se aumenta el tono parasimpático; por otro lado la amplitud de esta señal es por lo general mayor en la analgesia, pues se produce vasodilatación periférica, que incrementa el volumen sanguíneo pulsátil en los tejidos periféricos, aumentando la amplitud de la señal PPG. 
+
+Todo lo anterior concuerda con los resultados adquiridos por el cálculo de SPI, pues se presenta una mayor frecuencia de pulsos y, además, sus valores muestran valores superiores a los adecuados en estado de analgesia, que concuerda con la actividad simpática de nuestro cuerpo.
 
 ### c) Alcance y limitaciones para cuantificar el dolor con el sistema diseñado
 
-Frente al alcance del sistema, este es capaz de detectar respuestas autonómicas ante estímulos nociceptivos, evidenciando mediante la prueba de CPT, evidenciando que puede capturar cambios fisiológicos por la activación simpática a causa del dolor. Adicionalemente, permite una monitorización continua y ambulatoria al ser un sensor de bajo costo y tamaño reducido capás de medir el SPI en casi cualquier momento, sin contar que al medir variables fisiológicas y a partir de ellas calcular el SPI, otorga una cuantificación objetiva del dolor; lo anterior se puede demostrar y validar por medio de la práctica del CPT, que cuantifica el "nivel" de dolor que esta padeciendo el paciente en ele momento.
+Frente al alcance del sistema, este es capaz de detectar respuestas autonómicas ante estímulos nociceptivos, evidenciando mediante la prueba de CPT, evidenciando que puede capturar cambios fisiológicos por la activación simpática a causa del dolor. Adicionalemente, permite una monitorización continua y ambulatoria al ser un sensor de bajo costo y tamaño reducido capás de medir el SPI en casi cualquier momento, sin contar que al medir variables fisiológicas y a partir de ellas calcular el SPI, otorga una cuantificación objetiva del "dolor"; lo anterior se puede demostrar y validar por medio de la práctica del CPT, que cuantifica el "nivel de dolor" que esta padeciendo el paciente en ele momento.
 
-En cuanto a sus limitaciones, la calidad de la señal depende del sensor y la fijación del mismo, así como la presión ejercida sobre el y la ausencia de movimiento, en caso de afectar alguno de estos factores se pueden generar falsos picos o pérdida de señal. De mismo modo, el sistema de MATLAB de detección de picos puede fallar en señales ruidosas, afectando el cálculo del SPI. Por último, aunque la nociocepción refleja el procesamiento a estímulos dañinos, no es un indicador completo del dolor, pues este último es una experiencia subjetiva que involucra componentes sensoriales, emocionales y cognitivos, por ejemplo, un paciente puede sufrir dolor sin cambios significativos de su SPI. [5]
+En cuanto a sus limitaciones, la calidad de la señal depende del sensor y la fijación del mismo, así como la presión ejercida sobre el y la ausencia de movimiento, e inclusive la frecuencia respoiratoria del sujeto; en caso de afectar alguno de estos factores se pueden generar falsos picos o pérdida de señal. De mismo modo, el sistema de MATLAB de detección de picos puede fallar en señales ruidosas, afectando el cálculo del SPI. Por último, aunque la nociocepción refleja el procesamiento a estímulos dañinos, no es un indicador completo del dolor, pues este último es una experiencia subjetiva que involucra componentes sensoriales, emocionales y cognitivos, por ejemplo, un paciente puede sufrir dolor sin cambios significativos de su SPI. [5]
 
 ### d) ¿Cómo se relacionan las variaciones del volumen sanguíneo periférico con el balance autonómico?
 
