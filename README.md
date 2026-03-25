@@ -68,7 +68,43 @@ En primera instancia, hay que distinguir dos puntos escenciales para el código 
 
 #### Detección de picos:
 
+    d1 = value - prev_value;
+    d2 = d1 - prev_d1;
 
+    if (prev_d1 > 0 && d1 < 0) && (d2 < 0) && (t - last_peak_time > refractory)
+
+Donde "d1" indica la primera derivada, es decir, la pendiente de la señal, cuando cruza de positiva a negativa (prev_d1 > 0 && d1 < 0), se detecta un máximo local.Para el valor de "d2", representa la segunda derivada, (d2 < 0) confirma que el punto es un máximo (curvatura negativa), evitando falsos picos en mesetas.
+
+Por último, el periodo refractario, el cual se estableción en "refractory = 0.4" impide detectar un nuevo pico antes de 400 ms después del anterior, evitando detecciones múltiples por ruido o artefactos en una misma onda cardíaca
+
+#### Cálculo del SPI:
+
+Para el cálculo del SPI, primero se debe de hallar los valores de los intervalos entre latidos consecutivos (HBI), los valores basales de la señal y la amplitud del pulso (PPGA), lo anterior se muestra:
+
+    HBI = peak_time - last_peak_time_spi;   %Heart Beat Interval (s)
+    baseline = mean(baseline_buffer);       %Nivel basal de la señal
+    PPGA = value - baseline;                %Amplitud de pulso (peak-to-baseline)
+
+Para el cáluculo del HBI simplemente se restó el tiempo de un pico por el tiempo del pico inmediatamente siguiente; el PPGA se calculó como la diferencia entre el valor del pico y el nivel basal promedio de los últimos valores. Ahora bien, los valores anteriores se debian de normalizar mediante buffers de la forma:
+
+    PPGA_norm = (PPGA - min(PPGA_buffer)) / (max(PPGA_buffer) - min(PPGA_buffer) + eps) * 100;
+    HBI_norm  = (HBI  - min(HBI_buffer))  / (max(HBI_buffer)  - min(HBI_buffer)  + eps) * 100;
+
+La ventana correspondió a los últimos 10 valores de PPGA y HBI, en donde cada nueva muestra se normaliza respecto a los valores mínimo y máximo observados en la ventana, esto permite que la escala se adapte a la variabilidad del paciente. Con todo lo anterior se calculó el SPI:
+
+    SPI = 100 - (0.7*PPGA_norm + 0.3*HBI_norm);
+
+Esta es la fórmula estandar presentada en el marco teórico, donde a mayor valor resultante representa una mayor reacción nocioceptiva. A continuaión se muestran los resultados presentados:
+
+<img width="691" height="629" alt="image" src="https://github.com/user-attachments/assets/62c7a167-91c0-461b-9bcb-d2a8980aaa4c" />
+
+_(Fig 2. Gráfica señal PPG)_
+
+<img width="275" height="379" alt="image" src="https://github.com/user-attachments/assets/06e62e59-8ec4-41a5-a9fd-af08825dfd2b" />
+
+_(Fig 3. Terminal con datos SPI)_
+
+El análisis del comportamiento de los datos presentados y de la gráfica mostrada se explicará más a fondo en la sección IV, donde se compararán resultados al someter al sujeto al procedimiento de CPT.
 
 ### c) Método ejecución CPT
 
@@ -83,10 +119,6 @@ En primera instancia, hay que distinguir dos puntos escenciales para el código 
 ### b) Comparación valores SPI obtenidos con los observados durante una cirugía
 
 Los valores del SPI en condiciones de reposo se encuentran en constante variación, en donde predomina la actividad parasimpática, pero a pesar de no estar en un estado de alerta, la vasoconstricción periférica y la frecuencia cardíaca es mayor en comparación de un estado de analgesia, por lo que la actividad simpática es mayor que la que se estaría en analgesia; por lo anterior, el SPI calculado a partir de la PPG suele situarse en valores superiores a 50 (en su mayoría), tal como se evidencia en la terminal.
-
-<img width="275" height="379" alt="image" src="https://github.com/user-attachments/assets/06e62e59-8ec4-41a5-a9fd-af08825dfd2b" />
-
-_(Fig . Terminal con datos SPI reposo)_
 
 Ahora bien, comparando los valores adquiridos con los que se pueden presentar en un estado de anestasia general, el rango SPI es completamente distinto. En un contexto quirúrgico donde el paciente es sometido a anestesia general, la respuesta autonómica a los estímulos quirúrgicos no se elimina por completo, el objetivo es mantener un balance nocicepción-analgesia que evite respuestas simpáticas excesivas. Los estudios han establecido lo siguiente: [3]
 
