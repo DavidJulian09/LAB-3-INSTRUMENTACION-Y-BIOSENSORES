@@ -108,13 +108,31 @@ El análisis del comportamiento de los datos presentados y de la gráfica mostra
 
 ### c) Método ejecución CPT
 
+Respecto al método para la aplicación de CPT, se optó por emplear hielo en lugar de agua, pues esto garantiza una acticvación simpática por medio de los receptores nocioceptivos, sin contar que el hielo permitirá una respuesta aún mayor en comparación al agua. Finalmente para  la captura de la señal, primero se empezó a medir la señal PPG sin someter al paciente al CPT, una vez transcurrido un determinado tiempo se ubicó el hielo sobre la mano que no está situada sobre el sensor, esto garantiza la toma de la señal nocioceptiva, sin contar que nos permite la comparación de ambas señales y su correspondiente valores de SPI, estos datos se analizarán en la siguiente sección. El motaje anteriormente descrito se presenta a continuación:
 
+<img width="1600" height="1201" alt="image" src="https://github.com/user-attachments/assets/24c799e4-1e13-4370-b4a8-4f23ed1b2a14" />
+
+_(Fig 4. Montaje prueba CPT)_
 
 ## IV. ANÁLISIS DE RESULTADOS
 
 ### a) Comparación del SPI en reposo y aplicando maniobra CPT
 
+Antes de realizar un estudio exhaustivo de los valores adquiridos de SPI en la prueba, se debe de hablar en primer lugar de la onda PPG adquirida antes y después de la maniobra CPT, respecto a dichos resultados se muestran a continuación:
 
+<img width="1600" height="835" alt="image" src="https://github.com/user-attachments/assets/e5cee919-99ab-40d7-9550-3e3efd056f04" />
+
+_(Fig 5. Onda PPG antes y después de CPT)_
+
+En primer lugar, se debe de aclarar que los primeros 50 segundos el sujeto permaneció en reposo, presentando una amplitud de la señal mayor y con cierta variabilidad de la misma, ahora bien, una vez se aplicó la maniobra CPT en el segundo 50, se evidenció una disminución casi inmediata de la amplitud de la señal, lo anterior se debe a la vasoconstricción simpática, pues al ingresar someter el tejido cutáneo al hielo se activan termorreceptores que estimulan el sistema nocioceptivo, esta activación permite la liberación de adrenalina que descencadena la vasoconstricción que reduce el diámetro de los vasos sanguíneos y por consiguiente, la reducción del columen sanguíneo pulsátil; todo lo anterior tiene un efecto directo en la amplitud de la señal PPG. Ahora bien, no solo la amplitud de la señal fue afectada tras la maniobra CPT, también se evidencia un leve aumento de la frecuencia cardiaca, esto a causa de la activación simpática por sensores nocioceptivos anteriormente descrito.
+
+Una vez analisado lo anterior, se puede comprender por qué también se presentan cambios en los valores del SPI, pues este es un valor que depende de la amplitud del pulso (PPGA) y el intervalo entre latidos (HBI), como se explicó en el marco teórico, estos valores decrecieron tras la maniobra del CPT provocando que el valor del SPI incrementara proporcionalmente, lo anterior se muestra a continuación:
+
+<img width="215" height="368" alt="image" src="https://github.com/user-attachments/assets/c55c3984-3c90-4f04-99de-08d82da76d08" />
+
+_(Fig 6. Valores SPI tras la maniobra de CPT)_
+
+Los valores mostrados corresponden al instante en el que se realizó la maniobra CPT, tal como se evidencia el SPI se apoxima a valores de 100 justo como se esperaba, tras retirar la mano del hielo hay una disminución de los valores de SPI que se estabilizan en alrededor de 50, valores que concuerdan con los de una persona en estado de reposo (sin analgesia). Todo lo anterior nos permite comprender la relación de los procesos nocioceptivos con la señal SPI, y establecer este último con un indicador de dolor en pacientes. 
 
 ### b) Comparación valores SPI obtenidos con los observados durante una cirugía
 
