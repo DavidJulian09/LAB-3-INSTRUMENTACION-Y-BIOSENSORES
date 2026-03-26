@@ -82,10 +82,10 @@ Por último, el periodo refractario, el cual se estableción en "refractory = 0.
 Para el cálculo del SPI, primero se debe de hallar los valores de los intervalos entre latidos consecutivos (HBI), los valores basales de la señal y la amplitud del pulso (PPGA), lo anterior se muestra:
 
     HBI = peak_time - last_peak_time_spi;   %Heart Beat Interval (s)
-    baseline = mean(baseline_buffer);       %Nivel basal de la señal
+    PPGA = value - last_valley_value;       %valle basal de la señal
     PPGA = value - baseline;                %Amplitud de pulso (peak-to-baseline)
 
-Para el cáluculo del HBI simplemente se restó el tiempo de un pico por el tiempo del pico inmediatamente siguiente; el PPGA se calculó como la diferencia entre el valor del pico y el nivel basal promedio de los últimos valores. Ahora bien, los valores anteriores se debian de normalizar mediante buffers de la forma:
+Para el cáluculo del HBI simplemente se restó el tiempo de un pico por el tiempo del pico inmediatamente siguiente; el PPGA se calculó como la diferencia entre el valor del pico y el valor del pico del valle de la señal. Ahora bien, los valores anteriores se debian de normalizar mediante buffers de la forma:
 
     PPGA_norm = (PPGA - min(PPGA_buffer)) / (max(PPGA_buffer) - min(PPGA_buffer) + eps) * 100;
     HBI_norm  = (HBI  - min(HBI_buffer))  / (max(HBI_buffer)  - min(HBI_buffer)  + eps) * 100;
